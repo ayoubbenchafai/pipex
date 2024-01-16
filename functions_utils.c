@@ -1,4 +1,34 @@
 #include "pipex.h"
+int ft_check(char *s, char c)
+{
+    if(!s)
+        return (1);
+    while(*s)
+    {
+        if(*s == c)
+            return (1);
+           s++; 
+    }
+    return (0);
+}
+
+char *ft_get_path(char **s)
+{
+    int i;
+    char *cmd;
+    
+    if (!s)
+        return (NULL);
+    i = 0;
+    cmd = "PATH";
+    while(s[i] != NULL)
+    {
+        if(ft_check(cmd, *s[i]))
+            return (s[i]);
+        i++;
+    }
+    return (NULL);
+}
 size_t	ft_strlen(const char *s)
 {
 	size_t	len;
@@ -11,7 +41,22 @@ size_t	ft_strlen(const char *s)
 	}
 	return (len);
 }
+char	*ft_strcat(char *dest, char *src)
+{
+	int	i;
+	int	size_dest;
 
+	i = 0;
+	size_dest = ft_strlen(dest);
+	while (src[i] != '\0')
+	{
+		dest[size_dest] = src[i];
+		i++;
+		size_dest++;
+	}
+	dest[size_dest] = '\0';
+	return (dest);
+}
 char	*ft_strdup(const char *s1)
 {
 	int		i;
@@ -29,7 +74,31 @@ char	*ft_strdup(const char *s1)
 	tab[i] = '\0';
 	return (tab);
 }
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	size_t	i;
+	int		j;
+	size_t	size;
+	char	*ptr;
 
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	size = ft_strlen(s1) + ft_strlen(s2);
+	ptr = (char *)malloc(sizeof(char) * (size + 1));
+	if (ptr == NULL)
+		return (NULL);
+	while (i < ft_strlen(s1))
+	{
+		ptr[i] = s1[i];
+		i++;
+	}
+	while (i < size)
+		ptr[i++] = s2[j++];
+	ptr[i] = '\0';
+	return (ptr);
+}
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*ptr;
@@ -121,5 +190,38 @@ char	**ft_split(char const *s, char c)
 	ptr = ft_allocate_words(s, c, size, j);
 	return (ptr);
 }
+
+// void ft_exceve(char *av[], char *envp[])
+// {
+//     char **pathname;
+//     char **cmdargs;
+//     char *cmd;
+//     int i;
+    
+//     pathname = ft_split(envp[4], ':');
+//     if(!pathname)
+//         exit(EXIT_FAILURE);
+//     ///bin/ls
+//     cmdargs = ft_split(av[1], ' ');
+//     if(!cmdargs)
+//         exit(EXIT_FAILURE);
+//     i = 0;
+//     while(pathname[i++])
+//     {
+//         cmd = ft_strjoin(pathname[i], "/");
+//         cmd = ft_strjoin(cmd, cmdargs[0]);
+//         if(!cmd)
+//         {
+//             free(pathname);
+//             free(cmdargs);
+//             exit(EXIT_FAILURE);
+//         }
+//         execve(cmd, cmdargs, envp);
+//         // printf("TEST\n");
+//         // perror
+//         free(cmd);
+//     }
+//     exit(EXIT_FAILURE);
+// }
 
 

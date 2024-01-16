@@ -2,56 +2,61 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-int main(int ac, char **av)
-{
-    (void)ac;
-    (void)av;
-
+#include "pipex.h"
+// 2   5   24
+int main() {
     int pipefd[2];
-    pid_t pid;
-    char buffer[20];
+    pid_t ls_pid, wc_pid;
 
-    //pipefd[0] ==> lecture   ==> read
-    //pipefd[1] ==> écriture  ==> write
-
-
-    // Création du pipe  
-    if(pipe(pipefd) == -1)
-    {
-        perror("Erreur lors de la création du pipe");
-        exit(1);// exit(EXIT_FAILURE);
+    // Create a pipe
+    if (pipe(pipefd) == -1) {
+        perror("pipe");
+        return 1;
     }
 
-    // Création d'un processus enfant
-    pid = fork();
+    // Fork the first child process to execute "ls -la"
+    ls_pid = fork();
+    if (ls_pid == -1) {
+        perror("fork");
+        return 1;
+    } else if (ls_pid == 0) {
+        // Child process: ls -la
+        close(pipefd[0]); // Close the read end of the pipe
+        dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to the pipe write end
+        close(pipefd[1]); // Close the pipe write end
 
-    if(pid < 0)
-    {
-        perror("Erreur lors de la création du processus enfant");
-        exit(EXIT_FAILURE);
-    }
-    else if(pid == 0)
-    {
-        // Processus enfant
-        close(pipefd[1]);  // Fermeture de l'extrémité d'écriture du pipe
-
-        // Lecture des données du pipe
-        read(pipefd[0], buffer, sizeof(buffer));
-        printf("Processus enfant - Message reçu : %s\n", buffer);
-        close(pipefd[0]);  // Fermeture de l'extrémité de lecture du pipe
-    }
-    else
-    {
-        // Processus parent
-        close(pipefd[0]);  // Fermeture de l'extrémité de lecture du pipe
-
-        // Écriture des données dans le pipe
-        char message[] = "Bonjour, monde!";
-        write(pipefd[1], message, sizeof(message));
-
-        close(pipefd[1]);  // Fermeture de l'extrémité d'écriture du pipe
+        // Execute ls -la
+        char *ls_args[] = { "ls", "-la", NULL };
+        execve("/bin/ls", ls_args, NULL);
+        perror("execve ls");
+        return 1;
     }
 
-    return (0);
+    // Fork the second child process to execute "wc -l"
+    wc_pid = fork();
+    if (wc_pid == -1) {
+        perror("fork");
+        return 1;
+    } else if (wc_pid == 0) {
+        // Child process: wc -l
+        close(pipefd[1]); // Close the write end of the pipe
+        dup2(pipefd[0], STDIN_FILENO); // Redirect stdin to the pipe read end
+        close(pipefd[0]); // Close the pipe read end
+
+        // Execute wc -l
+        char *wc_args[] = { "wc", "-l", NULL };
+        execve("/usr/bin/wc", wc_args, NULL);
+        perror("execve wc");  
+        return 1;
+    }
+
+    // Parent process
+    close(pipefd[0]); // Close the read end of the pipe
+    close(pipefd[1]); // Close the write end of the pipe
+
+    // Wait for both child processes to complete
+    waitpid(ls_pid, NULL, 0);
+    waitpid(wc_pid, NULL, 0);
+
+    return 0;
 }

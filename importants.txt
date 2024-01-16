@@ -62,7 +62,7 @@ fd =open(argv[1], O_RDONLY);
     fork();
     fork();
     printf("hello world\n"); ==> print (number of fork)^2 = 16
-4^2 = 16 => n^2 (n : number of fork funtcion)
+2^4 = 16 => 2^n (n : number of fork funtcion)
 
 =============Wait function========================
 * Waiting for processes to finish (using the wait function) in C
@@ -72,8 +72,8 @@ fd =open(argv[1], O_RDONLY);
 ===============Process IDs in c====================
 # include <sys/wait.h>
 * every single process has an ID a number that is unique for that process.
-* every process in the systme has a parent process ID that has launched
-* always the child processes should terminate first before tha parent process terminates
+* every process in the system has a parent process ID that has launched
+* always the child processes should terminate first before the parent process terminates
 
 ===========================(leaf == number of the leaf)===============
 * "leaf" refers to a node that does not have any child
@@ -93,7 +93,7 @@ fd =open(argv[1], O_RDONLY);
 
 =======================Using execve in c============================
 * allows to run or execute a system command from your c program
-* system call : is a way for yout program to interact with the operating system
+* system call : is a way for your program to interact with the operating system
 * execve: The execve function is used to execute a specified program. It replaces
   the current process with a new process specified by the given program name and arguments.
 * execve(pathname, argv, envp)
@@ -108,4 +108,12 @@ fd =open(argv[1], O_RDONLY);
   1 - the first one is by adding a third parameter called char **env.
   2 - the normal way is by declaring an external variable (is the variable
       declared outside any function ) extern char **environment;
-* printenv : this command print all environment variables in the terminal.
+* printenv or env: this command print all environment variables in the terminal.
+
+
+
+
+
+-------------------important---------
+* arg[2] start with / or ./ its ok else it must join to the path;
+* check the access of command
