@@ -4,61 +4,108 @@
 #include <unistd.h>
 #include "pipex.h"
 
-void ft_exceve(char *av[], char **envp)
+
+
+char	*ft_strcpy(char *dst, const char *src)
 {
-    char *path_env = ft_get_path(environ);
-    char **cmdargs;
-    char **pathname;
-    char *cmd;
-    int i;
-    
-    pathname = ft_split(path_env, ':');
-    if(!pathname)
-        exit(EXIT_FAILURE);
-    
-    ///bin/ls
-    // cmdargs == "ls -la"
-    cmdargs = ft_split(av[1], ' ');
-    if(!cmdargs)
-        exit(EXIT_FAILURE);
-    i = 0;
-    while(pathname[i++])
-    {
-        if(cmdargs[0][0] == '/' /*|| (cmdargs[0][0] == '.' && cmdargs[0][1] == '/')*/)
-            cmd = ft_strjoin(pathname[i], cmdargs[0]);
-        else
-        {
-            cmd = ft_strjoin(pathname[i], "/");
-            cmd = ft_strjoin(cmd, cmdargs[0]);
-        }
-        if(!cmd)
-        {
-            free(pathname);
-            free(cmdargs);
-            exit(EXIT_FAILURE);
-        }
-        if(access(cmd, X_OK) == 0)
-            break;
-        else 
-            free(cmd);
-    }
-    printf("cmd : %s\n",cmd);
-    execve(cmd, cmdargs, envp);
-        printf("error TEST\n");
-        // perror
-    free(cmd);
-    exit(EXIT_FAILURE);
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }
+char	*ft_strcat(char *dest, char *src)
+{
+	int	i;
+	int	size_dest;
+
+	i = 0;
+    if(!dest)
+        return (ft_strcpy(dest,src));
+	size_dest = ft_strlen(dest);
+	while (src[i] != '\0')
+	{
+		dest[size_dest] = src[i];
+		i++;
+		size_dest++;
+	}
+	dest[size_dest] = '\0';
+	return (dest);
+}
+// ls -la | wc -la
 int main(int ac, char **av, char **envp) 
 {
-    // char **cmdargs = ft_split("./ls -la", ' ');
+    int fd[2];
+    int i = 0;
 
-    // if(!cmdargs)
-    //     exit(EXIT_FAILURE);
-    //     printf("No to join, %c\n",cmdargs[0][1]);
+    if(pipe(fd) == -1)
+        exit(EXIT_FAILURE);
 
-    ft_exceve(av,envp);
+    pid_t pid1,pid2;
 
+    pid1 = fork();
+    if(pid1 == -1)
+    {
+        perror("Error fork for child 1");
+        exit(EXIT_FAILURE);
+    }
+    else if( pid1 == 0)
+    {
+        //child 1: ls -la
+        int fd_out = open(av[1], O_CREAT | O_RDONLY );
+        if(fd_out == -1)
+        {
+            printf("Error open file : %s", av[1]);
+            exit(EXIT_FAILURE);
+        }
+        dup2(fd_out,0);
+
+        close(fd[0]);
+        dup2(fd[1], 1);
+        close(fd[1]);
+        close(fd_out);
+        // execute command : ls -la
+        ft_exceve(av[2]);
+    }
+
+    pid2 = fork();
+    if(pid2 == -1)
+    {
+        perror("Error fork for child 2");
+        exit(EXIT_FAILURE);
+    }
+    else if( pid2 == 0)
+    {
+        //child 1: wc -l
+        close(fd[1]);
+        dup2(fd[0], 0);
+        close(fd[0]);
+        int fd_out = open(av[4], O_CREAT | O_WRONLY | O_TRUNC );
+        if(fd_out == -1)
+        {
+            printf("Error open file : %s", av[4]);
+            exit(EXIT_FAILURE);
+        }
+        // printf("%d\n",fd_out);
+        dup2(fd_out,1);
+        close(fd_out);
+        // execute command : wc -la
+        ft_exceve(av[3]);
+    }
+    //close for parent process
+    close(fd[0]);
+    close(fd[1]);
+
+    //waiting for each child process
+    waitpid(pid1, NULL, 0);
+    waitpid(pid2, NULL, 0);
+
+    // printf("hhhhhh.\n");
     return (0);
 }
 

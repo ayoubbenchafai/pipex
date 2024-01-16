@@ -29,6 +29,7 @@ char *ft_get_path(char **s)
     }
     return (NULL);
 }
+//2 5 27
 size_t	ft_strlen(const char *s)
 {
 	size_t	len;
@@ -41,22 +42,22 @@ size_t	ft_strlen(const char *s)
 	}
 	return (len);
 }
-char	*ft_strcat(char *dest, char *src)
-{
-	int	i;
-	int	size_dest;
+// char	*ft_strcat(char *dest, char *src)
+// {
+// 	int	i;
+// 	int	size_dest;
 
-	i = 0;
-	size_dest = ft_strlen(dest);
-	while (src[i] != '\0')
-	{
-		dest[size_dest] = src[i];
-		i++;
-		size_dest++;
-	}
-	dest[size_dest] = '\0';
-	return (dest);
-}
+// 	i = 0;
+// 	size_dest = ft_strlen(dest);
+// 	while (src[i] != '\0')
+// 	{
+// 		dest[size_dest] = src[i];
+// 		i++;
+// 		size_dest++;
+// 	}
+// 	dest[size_dest] = '\0';
+// 	return (dest);
+// }
 char	*ft_strdup(const char *s1)
 {
 	int		i;
@@ -223,5 +224,48 @@ char	**ft_split(char const *s, char c)
 //     }
 //     exit(EXIT_FAILURE);
 // }
-
+void ft_exceve(char *s)
+{
+    char *path_env = ft_get_path(environ);
+    char **cmdargs;
+    char **pathname;
+    char *cmd;
+    int i;
+    
+    pathname = ft_split(path_env, ':');
+    if(!pathname)
+        exit(EXIT_FAILURE);
+    
+    ///bin/ls
+    // cmdargs == "ls -la"
+    cmdargs = ft_split(s, ' ');
+    if(!cmdargs)
+        exit(EXIT_FAILURE);
+    i = 0;
+    while(pathname[i++])
+    {
+        if(cmdargs[0][0] == '/' /*|| (cmdargs[0][0] == '.' && cmdargs[0][1] == '/')*/)
+            cmd = ft_strjoin(pathname[i], cmdargs[0]);
+        else
+        {
+            cmd = ft_strjoin(pathname[i], "/");
+            cmd = ft_strjoin(cmd, cmdargs[0]);
+        }
+        if(!cmd)
+        {
+            free(pathname);
+            free(cmdargs);
+            exit(EXIT_FAILURE);
+        }
+        if(access(cmd, X_OK) == 0)
+            break;
+        else 
+            free(cmd);
+    }
+    execve(cmd, cmdargs, NULL);
+        printf("error TEST\n");
+        // perror
+    free(cmd);
+    exit(EXIT_FAILURE);
+}
 

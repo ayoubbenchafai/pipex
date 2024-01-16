@@ -37,11 +37,11 @@ int main(int ac, char *av[], char *envp[])
         close(fd[0]);
         dup2(fd[1], STDOUT_FILENO);
         close(fd[1]);
-        if(access(av[1], R_OK) == -1)
-        {
-            perror("Error access file : infile");
-            exit(EXIT_FAILURE);
-        }
+        // if(access(av[1], R_OK) == -1)
+        // {
+        //     perror("Error access file : infile");
+        //     exit(EXIT_FAILURE);
+        // }
         int  f_1 = open(av[1], O_CREAT | O_RDONLY);
         if(f_1 == -1)
         {
@@ -52,13 +52,13 @@ int main(int ac, char *av[], char *envp[])
         dup2(f_1, 0);
         close(f_1);
 
-        char *shell = "/bin/sh";
-        char *args[]= {shell, "-c",av[2], NULL};
-        execve(shell, args, NULL);
-        perror("Error execve wc");
-        exit(EXIT_FAILURE);
+        // char *shell = "/bin/sh";
+        // char *args[]= {shell, "-c",av[2], NULL};
+        // execve(shell, args, NULL);
+        // perror("Error execve wc");
+        // exit(EXIT_FAILURE);
 
-        // ft_exceve(av, envp);
+        ft_exceve(av[1]);
 
     }
 
@@ -75,12 +75,12 @@ int main(int ac, char *av[], char *envp[])
         close(fd[0]);
 
         //child process : ls -la 
-        if(access(av[4], W_OK) == -1)
-        {
-            perror("Error access file : outfile");
-            exit(EXIT_FAILURE);
-        }
-        int  f_2 = open(av[4], O_CREAT | O_WRONLY | O_APPEND);
+        // if(access(av[4], W_OK) == -1)
+        // {
+        //     perror("Error access file : outfile");
+        //     exit(EXIT_FAILURE);
+        // }
+        int  f_2 = open(av[4], O_CREAT | O_WRONLY | O_TRUNC);
         if(f_2 == -1)
         {
             perror("Error opening file : outfile");
@@ -89,15 +89,16 @@ int main(int ac, char *av[], char *envp[])
 
         dup2(f_2,STDOUT_FILENO);
         close(f_2);
-        // ft_exceve(av, envp);
-        char *shell = "/bin/sh";
-        // char **arg_split = ft_split(av[2],' ');
-        char *args[]= {shell, "-c",av[3], NULL};
-        if(execve(shell, args, NULL) == -1)
-        {
-            perror("Error execve wc");
-            exit(EXIT_FAILURE);
-        }
+        
+        ft_exceve(av[ac - 2]);
+        // char *shell = "/bin/sh";
+        // // char **arg_split = ft_split(av[2],' ');
+        // char *args[]= {shell, "-c",av[3], NULL};
+        // if(execve(shell, args, NULL) == -1)
+        // {
+        //     perror("Error execve wc");
+        //     exit(EXIT_FAILURE);
+        // }
     }
 
     
