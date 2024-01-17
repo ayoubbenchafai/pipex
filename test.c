@@ -85,13 +85,12 @@ int main(int ac, char **av, char **envp)
         close(fd[1]);
         dup2(fd[0], 0);
         close(fd[0]);
-        int fd_out = open(av[4], O_CREAT | O_WRONLY | O_TRUNC );
+        int fd_out = open(av[4], O_CREAT | O_WRONLY | O_TRUNC | 420);
         if(fd_out == -1)
         {
             printf("Error open file : %s", av[4]);
             exit(EXIT_FAILURE);
         }
-        // printf("%d\n",fd_out);
         dup2(fd_out,1);
         close(fd_out);
         // execute command : wc -la

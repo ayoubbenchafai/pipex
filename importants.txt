@@ -111,9 +111,14 @@ fd =open(argv[1], O_RDONLY);
 * printenv or env: this command print all environment variables in the terminal.
 
 
-
+--------function exit-------
+the exit terminate a process;
 
 
 -------------------important---------
 * arg[2] start with / or ./ its ok else it must join to the path;
 * check the access of command
+
+
+-------------------------EOF--------
+==> stands of end of the file.
