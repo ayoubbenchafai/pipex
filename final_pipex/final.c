@@ -55,11 +55,11 @@ static void ft_wait(pid_t pid, int *a)
     } 
     exit(EXIT_SUCCESS);
 }
-int main(int ac, char *av[], char *envp[])
+int main(int ac, char *av[])
 {
     int fd1;
     int fd2;
-    int status;
+    // int status;
     int fd[2];
     pid_t pid1,pid2;
 
