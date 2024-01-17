@@ -136,3 +136,9 @@ the exit terminate a process;
            the parent process is not interested in retrieving of the status the child process
     0    : options flag means that not special option are set  he value 0 is commonly used to indicate no specific options or to request
            the default behavior of the function.
+
+
+
+-------------------Handle multiple pipes.--------------------
+ n cmd =>> (n)     processes child 
+       =>> (n - 1) pipe
