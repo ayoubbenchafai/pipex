@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include "pipex.h"
 
-static void ft_error(int fd, char *s)
+static void check_errors(int fd, char *s)
 {
     if(!s)
         return ;
@@ -13,19 +13,6 @@ static void ft_error(int fd, char *s)
         perror(s);
         exit(EXIT_FAILURE);
     }
-}
-
-static void ft_wait(pid_t pid, int *a)
-{
-    pid_t terminated_pid;
-    
-    terminated_pid = waitpid(pid, a, 0);
-    if (terminated_pid == -1) 
-    {
-        perror("waitpid");
-        exit(EXIT_FAILURE);
-    } 
-    exit(EXIT_SUCCESS);
 }
 static void ft_child1(int fd1, int *fpipe,char *cmd)
 {
@@ -37,7 +24,7 @@ static void ft_child1(int fd1, int *fpipe,char *cmd)
     //check dup != -1
     dup2(fpipe[1], 1);
     close(fpipe[1]);
-    printf("child1,\n");
+
     // execute cmd1 for the child process1:
     ft_exceve(cmd);
 }
@@ -54,9 +41,19 @@ static void ft_child2(int fd2, int *fpipe,char *cmd)
     close(fd2);
 
     // execute cmd2 for the child process2:
-    printf("child2,\n");
-
     ft_exceve(cmd);
+}
+static void ft_wait(pid_t pid, int *a)
+{
+    pid_t terminated_pid;
+    
+    terminated_pid = waitpid(pid, a, 0);
+    if (terminated_pid == -1) 
+    {
+        perror("waitpid");
+        exit(EXIT_FAILURE);
+    } 
+    exit(EXIT_SUCCESS);
 }
 int main(int ac, char *av[], char *envp[])
 {
@@ -66,57 +63,44 @@ int main(int ac, char *av[], char *envp[])
     int fd[2];
     pid_t pid1,pid2;
 
-    //check of argv 
-
-    if(pipe(fd) == -1)
+   if(pipe(fd) == -1)
     {
         perror("Error pipe");
         exit(EXIT_FAILURE);
-    }    
+    }
+    // check_errors(pipe(fd), "Error pipe");
     fd1 = open(av[1], O_CREAT | O_RDONLY);
     if(fd1 == -1)
     {
         printf("Error open file : %s\n", av[1]);
         exit(EXIT_FAILURE);
-    }    
+    }   
+     
     //permission for outfile
-    fd2 = open(av[4], O_CREAT | O_WRONLY | O_TRUNC );
+    fd2 = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC);
     if(fd2 == -1)
     {
-        printf("Error open file : %s\n", av[4]);
+        printf("Error open file : %s\n", av[ac - 1]);
         exit(EXIT_FAILURE);
     }
-    printf("HHHhh4.\n");
-
+     
     pid1 = fork();
-    if(pid1 == -1)
-    {
-        perror("Error fork for child 1");
-        exit(EXIT_FAILURE);
-    }
-    else if(pid1 == 0)
+    check_errors(pid1, "Error fork for child 1");
+    if(pid1 == 0)
         ft_child1(fd1, fd, av[2]);
-
+    
     pid2 = fork();
-    if(pid2 == -1)
-    {
-        perror("Error fork for child 2");
-        exit(EXIT_FAILURE);
-    }
-    else if(pid2 == 0)
-        ft_child2(fd2, fd, av[3]);
+    check_errors(pid2, "Error fork for child 2");
+    if(pid2 == 0)
+        ft_child2(fd2, fd, av[ac - 2]);
+    
     close(fd[0]);
     close(fd[1]);
 
-    waitpid(pid1, &status, 0);
-    waitpid(pid2, &status, 0);
-    //pipe() oui 100
-    //child 1 oui 100
-    //child 2 oui 100
-    //close(0) && close(1); ==> for the parent
-    //waiting each child
-
-    printf("test.\n");
+    ft_wait(pid1, NULL);
+    ft_wait(pid2, NULL);
+    // waitpid(pid1, &status, 0);
+    // waitpid(pid2, &status, 0);
     return (0);
 }
 
