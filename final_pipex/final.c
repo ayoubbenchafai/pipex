@@ -43,6 +43,18 @@ static void ft_child2(int fd2, int *fpipe,char *cmd)
     // execute cmd2 for the child process2:
     ft_exceve(cmd);
 }
+static void ft_wait(pid_t pid, int *a)
+{
+    pid_t terminated_pid;
+    
+    terminated_pid = waitpid(pid, a, 0);
+    if (terminated_pid == -1) 
+    {
+        perror("waitpid");
+        exit(EXIT_FAILURE);
+    } 
+    exit(EXIT_SUCCESS);
+}
 int main(int ac, char *av[], char *envp[])
 {
     int fd1;
@@ -51,7 +63,12 @@ int main(int ac, char *av[], char *envp[])
     int fd[2];
     pid_t pid1,pid2;
 
-    check_errors(pipe(fd), "Error pipe");
+   if(pipe(fd) == -1)
+    {
+        perror("Error pipe");
+        exit(EXIT_FAILURE);
+    }
+    // check_errors(pipe(fd), "Error pipe");
     fd1 = open(av[1], O_CREAT | O_RDONLY);
     if(fd1 == -1)
     {
@@ -66,7 +83,7 @@ int main(int ac, char *av[], char *envp[])
         printf("Error open file : %s\n", av[ac - 1]);
         exit(EXIT_FAILURE);
     }
-
+     
     pid1 = fork();
     check_errors(pid1, "Error fork for child 1");
     if(pid1 == 0)
@@ -80,8 +97,10 @@ int main(int ac, char *av[], char *envp[])
     close(fd[0]);
     close(fd[1]);
 
-    waitpid(pid1, &status, 0);
-    waitpid(pid2, &status, 0);
+    ft_wait(pid1, NULL);
+    ft_wait(pid2, NULL);
+    // waitpid(pid1, &status, 0);
+    // waitpid(pid2, &status, 0);
     return (0);
 }
 

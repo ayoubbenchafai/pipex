@@ -14,6 +14,19 @@ static void ft_error(int fd, char *s)
         exit(EXIT_FAILURE);
     }
 }
+
+static void ft_wait(pid_t pid, int *a)
+{
+    pid_t terminated_pid;
+    
+    terminated_pid = waitpid(pid, a, 0);
+    if (terminated_pid == -1) 
+    {
+        perror("waitpid");
+        exit(EXIT_FAILURE);
+    } 
+    exit(EXIT_SUCCESS);
+}
 static void ft_child1(int fd1, int *fpipe,char *cmd)
 {
     close(fpipe[0]);
@@ -24,7 +37,7 @@ static void ft_child1(int fd1, int *fpipe,char *cmd)
     //check dup != -1
     dup2(fpipe[1], 1);
     close(fpipe[1]);
-
+    printf("child1,\n");
     // execute cmd1 for the child process1:
     ft_exceve(cmd);
 }
@@ -41,6 +54,8 @@ static void ft_child2(int fd2, int *fpipe,char *cmd)
     close(fd2);
 
     // execute cmd2 for the child process2:
+    printf("child2,\n");
+
     ft_exceve(cmd);
 }
 int main(int ac, char *av[], char *envp[])

@@ -122,3 +122,17 @@ the exit terminate a process;
 
 -------------------------EOF--------
 ==> stands of end of the file.
+
+
+
+--------------------waitpid ---------wait--------------
+* why we use waitpid instead of wait;
+  when a fork calls : 
+  1 - if we have one child process, the wait functions It's enough to use it only.
+  2 - if we have more than one child process we need to use waitpid to specified which child process we wait first 
+* prototype : waitpid(pid, NULL, 0);
+    pid  : the process id of the child that the parent wants to wait for.
+    NULL : is a pointer to an integer that it used to store the termination status of the child process , in this case NULL : means
+           the parent process is not interested in retrieving of the status the child process
+    0    : options flag means that not special option are set  he value 0 is commonly used to indicate no specific options or to request
+           the default behavior of the function.
