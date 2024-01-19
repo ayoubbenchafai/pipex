@@ -1,4 +1,6 @@
 #include "pipex.h"
+#include <stdio.h>
+
 int ft_check(char *s, char c)
 {
     if(!s)
@@ -42,22 +44,6 @@ size_t	ft_strlen(const char *s)
 	}
 	return (len);
 }
-// char	*ft_strcat(char *dest, char *src)
-// {
-// 	int	i;
-// 	int	size_dest;
-
-// 	i = 0;
-// 	size_dest = ft_strlen(dest);
-// 	while (src[i] != '\0')
-// 	{
-// 		dest[size_dest] = src[i];
-// 		i++;
-// 		size_dest++;
-// 	}
-// 	dest[size_dest] = '\0';
-// 	return (dest);
-// }
 char	*ft_strdup(const char *s1)
 {
 	int		i;
@@ -224,9 +210,11 @@ char	**ft_split(char const *s, char c)
 //     }
 //     exit(EXIT_FAILURE);
 // }
-void ft_exceve(char *s)
+void ft_exceve(char *s, char **envp)
 {
-    char *path_env = ft_get_path(environ);
+    // printf("hhh%s\n",s);
+    // printf("%s\n",s);
+    char *path_env = ft_get_path(envp);
     char **cmdargs;
     char **pathname;
     char *cmd;
@@ -262,8 +250,8 @@ void ft_exceve(char *s)
         else 
             free(cmd);
     }
-    execve(cmd, cmdargs, NULL);
-        printf("error TEST\n");
+    execve(cmd, cmdargs, envp);
+        // perror("error TEST\n");
         // perror
     free(cmd);
     exit(EXIT_FAILURE);

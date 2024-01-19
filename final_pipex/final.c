@@ -14,6 +14,8 @@ static void check_errors(int fd, char *s)
         exit(EXIT_FAILURE);
     }
 }
+// fd1 === file1
+// 0 == file1
 static void ft_child1(int fd1, int *fpipe,char *cmd)
 {
     close(fpipe[0]);
@@ -53,7 +55,7 @@ static void ft_wait(pid_t pid, int *a)
         perror("waitpid");
         exit(EXIT_FAILURE);
     } 
-    exit(EXIT_SUCCESS);
+    // exit(EXIT_SUCCESS);
 }
 int main(int ac, char *av[])
 {
@@ -69,7 +71,7 @@ int main(int ac, char *av[])
         exit(EXIT_FAILURE);
     }
     // check_errors(pipe(fd), "Error pipe");
-    fd1 = open(av[1], O_CREAT | O_RDONLY);
+    fd1 = open(av[1],  O_RDONLY);
     if(fd1 == -1)
     {
         printf("Error open file : %s\n", av[1]);
@@ -77,7 +79,7 @@ int main(int ac, char *av[])
     }   
      
     //permission for outfile
-    fd2 = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC);
+    fd2 = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC , 0644);
     if(fd2 == -1)
     {
         printf("Error open file : %s\n", av[ac - 1]);
@@ -99,6 +101,8 @@ int main(int ac, char *av[])
 
     ft_wait(pid1, NULL);
     ft_wait(pid2, NULL);
+    // wait(NULL);
+    // wait(NULL);
     // waitpid(pid1, &status, 0);
     // waitpid(pid2, &status, 0);
     return (0);

@@ -241,6 +241,7 @@ void ft_exceve(char *s)
     cmdargs = ft_split(s, ' ');
     if(!cmdargs)
         exit(EXIT_FAILURE);
+    fprintf(stderr,"%s", cmdargs[1]);
     i = 0;
     while(pathname[i++])
     {
@@ -257,7 +258,7 @@ void ft_exceve(char *s)
             free(cmdargs);
             exit(EXIT_FAILURE);
         }
-        if(access(cmd, X_OK) == 0)
+        if(access(cmd, F_OK | X_OK) == 0)
             break;
         else 
             free(cmd);
@@ -269,3 +270,4 @@ void ft_exceve(char *s)
     exit(EXIT_FAILURE);
 }
 
+// "ls '-l''a'"

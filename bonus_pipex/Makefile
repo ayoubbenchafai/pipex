@@ -1,4 +1,4 @@
-NAME= pipex
+NAME= pipex.a
 CC= cc
 CFLAGS= -Wall -Wextra -Werror
 

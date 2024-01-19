@@ -140,5 +140,5 @@ the exit terminate a process;
 
 
 -------------------Handle multiple pipes.--------------------
- n cmd =>> (n)     processes child 
+ n cmd =>> (n)     processes child n fork
        =>> (n - 1) pipe

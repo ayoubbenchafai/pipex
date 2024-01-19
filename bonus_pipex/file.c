@@ -17,19 +17,21 @@ static void check_errors(int fd, char *s)
 static void ft_child1(int fd1, int *fpipe,char *cmd)
 {
     close(fpipe[0]);
-    //check dup != -1
+    dup2(fpipe[1], 1);
+    close(fpipe[1]);
+    
+    
     dup2(fd1, 0);
     close(fd1);
 
     //check dup != -1
-    dup2(fpipe[1], 1);
-    close(fpipe[1]);
+    
 
     // execute cmd1 for the child process1:
-    ft_exceve(cmd);
+    // ft_exceve(cmd);
 }
 
-static void ft_child2(int fd2, int *fpipe,char *cmd)
+static void ft_child2(int fd2, int *fpipe,char *cmd )
 {
     close(fpipe[1]);
     //check dup != -1
@@ -37,11 +39,15 @@ static void ft_child2(int fd2, int *fpipe,char *cmd)
     close(fpipe[0]);
 
     //check dup != -1
-    dup2(fd2, 1);
-    close(fd2);
+    // if(index == ac - 2)
+    
+    // {
+        dup2(fd2, 1);
+        close(fd2);
+    // }
 
     // execute cmd2 for the child process2:
-    ft_exceve(cmd);
+    // ft_exceve(cmd);
 }
 static void ft_wait(pid_t pid, int *a)
 {
@@ -63,13 +69,13 @@ int main(int ac, char *av[])
     int fd[2];
     pid_t pid1,pid2;
 
-   if(pipe(fd) == -1)
+    if(pipe(fd) == -1)
     {
         perror("Error pipe");
         exit(EXIT_FAILURE);
     }
     // check_errors(pipe(fd), "Error pipe");
-    fd1 = open(av[1], O_CREAT | O_RDONLY);
+    fd1 = open(av[1], O_RDONLY);
     if(fd1 == -1)
     {
         printf("Error open file : %s\n", av[1]);
@@ -77,7 +83,7 @@ int main(int ac, char *av[])
     }   
      
     //permission for outfile
-    fd2 = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC);
+    fd2 = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC , 0644);
     if(fd2 == -1)
     {
         printf("Error open file : %s\n", av[ac - 1]);
