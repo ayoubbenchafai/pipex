@@ -6,12 +6,11 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 12:08:45 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/22 01:28:49 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:14:25 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
 
 size_t	ft_strlen(const char *s)
 {
@@ -43,6 +42,7 @@ char	*ft_strdup(const char *s1)
 	tab[i] = '\0';
 	return (tab);
 }
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	i;
@@ -68,38 +68,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ptr[i] = '\0';
 	return (ptr);
 }
-
-void ft_close(int fd)
-{
-    int a;
-    
-    a = close(fd);
-    check_errors(a, "Error close");
-}
-
-void ft_dup2(int oldfd, int newfd)
-{
-    int a;
-    
-    a = dup2(oldfd, newfd);
-    check_errors(a, "Error close");
-}
-
-void ft_pipe(int *fd)
-{
-    check_errors(pipe(fd), "Error creating pipe");
-}
-
-void ft_wait(int pid)
-{
-    pid_t terminated_pid;
-    
-    terminated_pid = waitpid(pid, NULL, 0);
-    if (terminated_pid == -1) 
-    {
-        perror("Error waiting");
-        exit(1);
-    } 
-}
-
-

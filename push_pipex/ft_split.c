@@ -6,7 +6,7 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 11:57:11 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/22 01:15:32 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:06:44 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,6 @@ static void	free_memory(char **ptr, int j)
 		free(ptr[j]);
 	}
 	free(ptr);
-}
-
-void	ft_free_array(char **tab)
-{
-	size_t	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
 }
 
 static char	*ft_substr(char const *s, unsigned int start, size_t len)
