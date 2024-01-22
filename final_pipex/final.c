@@ -53,9 +53,8 @@ static void ft_wait(pid_t pid, int *a)
     if (terminated_pid == -1) 
     {
         perror("waitpid");
-        exit(EXIT_FAILURE);
+        exit(1);
     } 
-    // exit(EXIT_SUCCESS);
 }
 int main(int ac, char *av[])
 {
@@ -101,10 +100,6 @@ int main(int ac, char *av[])
 
     ft_wait(pid1, NULL);
     ft_wait(pid2, NULL);
-    // wait(NULL);
-    // wait(NULL);
-    // waitpid(pid1, &status, 0);
-    // waitpid(pid2, &status, 0);
     return (0);
 }
 

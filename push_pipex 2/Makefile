@@ -1,16 +1,14 @@
-NAME= pipex.a
+NAME= pipex
 CC= cc
 CFLAGS= -Wall -Wextra -Werror
 
-
-SRC = functions_utils.c final.c
-	
-OBJ = $(SRC:.c=.o)
+SRC = main.c functions_utils.c  functions_utils2.c ft_split.c
+OBJ = $(SRC:.c=.o)	
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rc $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 	
 %.o: %.c pipex.h
 	$(CC) $(CFLAGS) -c $< -o $@

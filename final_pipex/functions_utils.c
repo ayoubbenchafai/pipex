@@ -1,105 +1,5 @@
 #include "pipex.h"
-int ft_check(char *s, char c)
-{
-    if(!s)
-        return (1);
-    while(*s)
-    {
-        if(*s == c)
-            return (1);
-           s++; 
-    }
-    return (0);
-}
 
-char *ft_get_path(char **s)
-{
-    int i;
-    char *cmd;
-    
-    if (!s)
-        return (NULL);
-    i = 0;
-    cmd = "PATH";
-    while(s[i] != NULL)
-    {
-        if(ft_check(cmd, *s[i]))
-            return (s[i]);
-        i++;
-    }
-    return (NULL);
-}
-//2 5 27
-size_t	ft_strlen(const char *s)
-{
-	size_t	len;
-
-	len = 0;
-	while (*s)
-	{
-		len++;
-		s++;
-	}
-	return (len);
-}
-// char	*ft_strcat(char *dest, char *src)
-// {
-// 	int	i;
-// 	int	size_dest;
-
-// 	i = 0;
-// 	size_dest = ft_strlen(dest);
-// 	while (src[i] != '\0')
-// 	{
-// 		dest[size_dest] = src[i];
-// 		i++;
-// 		size_dest++;
-// 	}
-// 	dest[size_dest] = '\0';
-// 	return (dest);
-// }
-char	*ft_strdup(const char *s1)
-{
-	int		i;
-	char	*tab;
-
-	i = 0;
-	tab = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
-	if (tab == NULL)
-		return (NULL);
-	while (s1[i])
-	{
-		tab[i] = s1[i];
-		i++;
-	}
-	tab[i] = '\0';
-	return (tab);
-}
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	i;
-	int		j;
-	size_t	size;
-	char	*ptr;
-
-	i = 0;
-	j = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	size = ft_strlen(s1) + ft_strlen(s2);
-	ptr = (char *)malloc(sizeof(char) * (size + 1));
-	if (ptr == NULL)
-		return (NULL);
-	while (i < ft_strlen(s1))
-	{
-		ptr[i] = s1[i];
-		i++;
-	}
-	while (i < size)
-		ptr[i++] = s2[j++];
-	ptr[i] = '\0';
-	return (ptr);
-}
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*ptr;
@@ -258,7 +158,7 @@ void ft_exceve(char *s)
             free(cmdargs);
             exit(EXIT_FAILURE);
         }
-        if(access(cmd, F_OK | X_OK) == 0)
+        if(access(cmd, F_OK | X_OK) == 0) 
             break;
         else 
             free(cmd);
