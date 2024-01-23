@@ -6,7 +6,7 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 12:12:49 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/23 00:02:34 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/23 00:44:47 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static void	ft_read(int *fd)
 {
     ft_close(fd[1]);
-        ft_dup2(fd[0], 0);
-        ft_close(fd[0]);
+    ft_dup2(fd[0], 0);
+    ft_close(fd[0]);
 }
 static void ft_child(char *cmd, char **envp,bool c, int *outfile)
 {
