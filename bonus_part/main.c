@@ -6,7 +6,7 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 12:12:49 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/23 00:44:47 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:44:17 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	ft_read(int *fd)
     ft_close(fd[1]);
     ft_dup2(fd[0], 0);
     ft_close(fd[0]);
+    ft_wait();
 }
 static void ft_child(char *cmd, char **envp,bool c, int *outfile)
 {
@@ -25,7 +26,6 @@ static void ft_child(char *cmd, char **envp,bool c, int *outfile)
     ft_pipe(fd);
 
     pid = fork();
-
     check_errors(pid, "Error forking first process");
     if(pid == 0)
     {
@@ -58,7 +58,6 @@ int	main(int ac, char **av, char **envp)
 		exit(1);
 	}
 	fd1 = open(av[1], O_RDONLY);
-	if (fd1 < 0)
 		check_errors(fd1, "Error opening infile");
     ft_dup2(fd1, 0);
     ft_close(fd1);
@@ -67,8 +66,5 @@ int	main(int ac, char **av, char **envp)
     i = 1;
     while(++i < ac - 1)
         ft_child(av[i], envp , (i + 1 == ac - 1), &fd2);
-    i = i - 2;
-    while(i--)
-        ft_wait();
 	return (0);
 }

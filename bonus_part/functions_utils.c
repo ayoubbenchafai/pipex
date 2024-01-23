@@ -6,42 +6,42 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 12:08:45 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/23 00:31:14 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:04:27 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	len;
+// size_t	ft_strlen(const char *s)
+// {
+// 	size_t	len;
 
-	len = 0;
-	while (*s)
-	{
-		len++;
-		s++;
-	}
-	return (len);
-}
+// 	len = 0;
+// 	while (*s)
+// 	{
+// 		len++;
+// 		s++;
+// 	}
+// 	return (len);
+// }
 
-char	*ft_strdup(const char *s1)
-{
-	int		i;
-	char	*tab;
+// char	*ft_strdup(const char *s1)
+// {
+// 	int		i;
+// 	char	*tab;
 
-	i = 0;
-	tab = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
-	if (tab == NULL)
-		return (NULL);
-	while (s1[i])
-	{
-		tab[i] = s1[i];
-		i++;
-	}
-	tab[i] = '\0';
-	return (tab);
-}
+// 	i = 0;
+// 	tab = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
+// 	if (tab == NULL)
+// 		return (NULL);
+// 	while (s1[i])
+// 	{
+// 		tab[i] = s1[i];
+// 		i++;
+// 	}
+// 	tab[i] = '\0';
+// 	return (tab);
+// }
 
 // char	*ft_strjoin(char const *s1, char const *s2)
 // {

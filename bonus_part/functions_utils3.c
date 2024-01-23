@@ -6,11 +6,12 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 15:47:05 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/22 23:07:20 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:07:21 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include "get_next_line/get_next_line.h"
 
 void	check_errors(int fd, char *s)
 {

@@ -6,11 +6,12 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 00:42:03 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/22 16:21:33 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:07:24 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include "get_next_line/get_next_line.h"
 
 int	ft_check(char *s, char c)
 {
@@ -41,15 +42,6 @@ char	*ft_get_path(char **s)
 		i++;
 	}
 	return (NULL);
-}
-
-char	*ft_join_free(char *s, const char *buf)
-{
-	char	*r;
-
-	r = ft_strjoin(s, buf);
-	free(s);
-	return (r);
 }
 
 char	*ft_pathname(char **paths, char **cmdargs)
