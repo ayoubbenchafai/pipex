@@ -21,7 +21,7 @@ void	here_doc_put_in(char **av, int *p_fd)
 		free(ret);
 	}
 }
-
+//2       5      24
 void	here_doc(char **av)
 {
 	int		p_fd[2];

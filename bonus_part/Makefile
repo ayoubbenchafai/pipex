@@ -2,7 +2,9 @@ NAME= pipex
 CC= cc
 CFLAGS= -Wall -Wextra -Werror
 
-SRC = main.c functions_utils2.c functions_utils3.c ft_split.c
+SRC = final_herdoc.c functions_utils2.c functions_utils3.c ft_split.c \
+		get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
+    
 OBJ = $(SRC:.c=.o)	
 
 all: $(NAME)
