@@ -1,39 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   final_herdoc.c                                     :+:      :+:    :+:   */
+/*   ft_herdoc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/23 15:28:56 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/23 16:21:36 by aben-cha         ###   ########.fr       */
+/*   Created: 2024/01/24 00:22:52 by aben-cha          #+#    #+#             */
+/*   Updated: 2024/01/24 01:06:01 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "pipex.h"
-#include "get_next_line/get_next_line.h"
 
-static void	ft_read(int *fd)
-{
-    ft_close(fd[1]);
-    ft_dup2(fd[0], 0);
-    ft_close(fd[0]);
-}
-int	ft_strcmp(char *s1, char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (0);
-}
-static void ft_read_input(char **av, int *fd)
+void ft_read_input(char **av, int *fd)
 {
     size_t len_s;
     char *s;
@@ -57,33 +36,15 @@ static void ft_read_input(char **av, int *fd)
         free(s);
     }
 }
-static void ft_child(char *cmd, char **envp, bool c, int *outfile)
+
+void	ft_read_pipe(int *fd)
 {
-    int fd[2];
-    int pid;
-    
-    ft_pipe(fd);
-    pid = fork();
-    check_errors(pid, "Error forking first process");
-    if(pid == 0)
-    {
-        ft_close(fd[0]);
-        if(c)
-        {
-            ft_dup2(*outfile, 1);
-            ft_close(*outfile);
-        }
-        else
-        {
-            ft_dup2(fd[1], 1);
-            ft_close(fd[1]);
-        }
-        ft_exceve(cmd, envp);
-    }
-    else
-        ft_read(fd);
+    ft_close(fd[1]);
+    ft_dup2(fd[0], 0);
+    ft_close(fd[0]);
 }
-static void ft_herdoc(char **av)
+
+void ft_herdoc(char **av)
 {
     int fd[2];
     int pid ;
@@ -98,8 +59,9 @@ static void ft_herdoc(char **av)
         ft_close(fd[1]);
     }
     else
-        ft_read(fd);
+        ft_read_pipe(fd);
 }
+
 int  ft_open(char **av,int ac, int *outfile, int i)
 {
     int infile;
@@ -124,22 +86,30 @@ int  ft_open(char **av,int ac, int *outfile, int i)
     }
     return (i);
 }
-int main(int ac, char **av, char **envp)
+
+void ft_process(char *cmd, char **envp, bool c, int *outfile)
 {
-    int i;
-    int outfile;
+    int fd[2];
+    int pid;
     
-    if(ac < 5)
+    ft_pipe(fd);
+    pid = fork();
+    check_errors(pid, "Error forking first process");
+    if(pid == 0)
     {
-        perror("Invalid Arguments!.");
-        exit(1);        
+        ft_close(fd[0]);
+        if(c)
+        {
+            ft_dup2(*outfile, 1);
+            ft_close(*outfile);
+        }
+        else
+        {
+            ft_dup2(fd[1], 1);
+            ft_close(fd[1]);
+        }
+        ft_exceve(cmd, envp);
     }
-    outfile = 0;    
-    i = ft_open(av, ac, &outfile, 1);
-    while(++i < ac - 1)
-        ft_child(av[i], envp , (i + 1 == ac - 1), &outfile);
-    int j = i - 2;
-    while(j--)
-        ft_wait();
-    return (0);
+    else
+        ft_read_pipe(fd);
 }

@@ -5,82 +5,53 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 00:42:03 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/23 10:07:24 by aben-cha         ###   ########.fr       */
+/*   Created: 2024/01/22 15:47:05 by aben-cha          #+#    #+#             */
+/*   Updated: 2024/01/24 00:19:44 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include "get_next_line/get_next_line.h"
 
-int	ft_check(char *s, char c)
+void	check_errors(int fd, char *s)
 {
 	if (!s)
-		return (1);
-	while (*s)
+		return ;
+	if (fd == -1)
 	{
-		if (*s == c)
-			return (1);
-		s++;
-	}
-	return (0);
-}
-
-char	*ft_get_path(char **s)
-{
-	int		i;
-	char	*cmd;
-
-	if (!s)
-		return (NULL);
-	i = 0;
-	cmd = "PATH";
-	while (s[i] != NULL)
-	{
-		if (ft_check(cmd, *s[i]))
-			return (s[i]);
-		i++;
-	}
-	return (NULL);
-}
-
-char	*ft_pathname(char **paths, char **cmdargs)
-{
-	int		i;
-	char	*cmd;
-
-	i = -1;
-	while (paths[++i])
-	{
-		if (cmdargs[0][0] == '/')
-			cmd = ft_join_free(paths[i], cmdargs[0]);
-		else
-		{
-			cmd = ft_join_free(paths[i], "/");
-			cmd = ft_join_free(cmd, cmdargs[0]);
-		}
-		if (access(cmd, F_OK | X_OK) == 0)
-			break ;
-	}
-	return (cmd);
-}
-
-void	ft_exceve(char *s, char **envp)
-{
-	char	*cmd;
-	char	**paths;
-	char	**cmdargs;
-
-	paths = ft_split(ft_get_path(envp), ':');
-	cmdargs = ft_split(s, ' ');
-	cmd = ft_pathname(paths, cmdargs);
-	if (!cmd)
+		perror(s);
 		exit(1);
-	if (ft_check(s, 39))
-		cmdargs = ft_split(s, 39);
-	else if (ft_check(s, '"'))
-		cmdargs = ft_split(s, '"');
-	execve(cmd, cmdargs, envp);
-	perror("Error execve.");
-	free(cmdargs);
+	}
+}
+
+void	ft_close(int fd)
+{
+	int	a;
+
+	a = close(fd);
+	check_errors(a, "Error close");
+}
+
+void	ft_dup2(int oldfd, int newfd)
+{
+	int	a;
+
+	a = dup2(oldfd, newfd);
+	check_errors(a, "Error close");
+}
+
+void	ft_pipe(int *fd)
+{
+	check_errors(pipe(fd), "Error creating pipe");
+}
+
+void	ft_wait()
+{
+	pid_t	terminated_pid;
+
+	terminated_pid = wait(NULL);
+	if (terminated_pid == -1)
+	{
+		perror("Error waiting");
+		exit(1);
+	}
 }

@@ -75,7 +75,7 @@ fd =open(argv[1], O_RDONLY);
 * every process in the system has a parent process ID that has launched
 * always the child processes should terminate first before the parent process terminates
 
-===========================(leaf == number of the leaf)===============
+===========================(leaf == number of the child)===============
 * "leaf" refers to a node that does not have any child
 * the number of process is number of the leaf.
 
@@ -136,7 +136,6 @@ the exit terminate a process;
            the parent process is not interested in retrieving of the status the child process
     0    : options flag means that not special option are set  he value 0 is commonly used to indicate no specific options or to request
            the default behavior of the function.
-
 
 
 -------------------Handle multiple pipes.--------------------

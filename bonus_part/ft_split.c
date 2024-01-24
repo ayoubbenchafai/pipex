@@ -6,12 +6,11 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 11:57:11 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/23 10:07:29 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/24 00:05:03 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include "get_next_line/get_next_line.h"
 
 static int	nbr_strings(const char *s, char c)
 {
