@@ -6,7 +6,7 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 12:12:49 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/22 17:48:19 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:27:09 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int ac, char **av, char **envp)
 	int	fd2;
 	int	fd[2];
 
-	if (ac < 5 || ac > 5)
+	if (ac != 5)
 	{
 		perror("Insufficient arguments.");
 		exit(1);

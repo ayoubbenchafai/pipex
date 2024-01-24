@@ -1,70 +1,91 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   functions_utils.c                                  :+:      :+:    :+:   */
+/*   gnl_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/21 12:08:45 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/22 16:14:25 by aben-cha         ###   ########.fr       */
+/*   Created: 2023/12/11 11:32:17 by aben-cha          #+#    #+#             */
+/*   Updated: 2024/01/24 15:25:36 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-size_t	ft_strlen(const char *s)
+char	*ft_join_free(char *s, const char *buf)
 {
-	size_t	len;
+	char	*r;
 
-	len = 0;
-	while (*s)
-	{
-		len++;
-		s++;
-	}
-	return (len);
+	r = ft_strjoin(s, buf);
+	free(s);
+	return (r);
 }
 
-char	*ft_strdup(const char *s1)
+size_t	ft_strlen(const char *s)
 {
-	int		i;
+	size_t	i;
+
+	i = 0;
+	while (*s)
+	{
+		s++;
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_strdup(const char *s)
+{
+	size_t	i;
 	char	*tab;
 
 	i = 0;
-	tab = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
-	if (tab == NULL)
+	tab = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!tab)
 		return (NULL);
-	while (s1[i])
+	while (s[i])
 	{
-		tab[i] = s1[i];
+		tab[i] = s[i];
 		i++;
 	}
 	tab[i] = '\0';
 	return (tab);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strcpy(char *dst, const char *src)
 {
-	size_t	i;
-	int		j;
-	size_t	size;
-	char	*ptr;
+	int	i;
 
 	i = 0;
-	j = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	size = ft_strlen(s1) + ft_strlen(s2);
-	ptr = (char *)malloc(sizeof(char) * (size + 1));
-	if (ptr == NULL)
-		return (NULL);
-	while (i < ft_strlen(s1))
+	while (src[i])
 	{
-		ptr[i] = s1[i];
+		dst[i] = src[i];
 		i++;
 	}
-	while (i < size)
-		ptr[i++] = s2[j++];
-	ptr[i] = '\0';
-	return (ptr);
+	dst[i] = '\0';
+	return (dst);
+}
+
+char	*ft_strjoin(char *s1, const char *s2)
+{
+	size_t	i;
+	size_t	size;
+	char	*tab;
+
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+		return (NULL);
+	i = 0;
+	size = ft_strlen(s1) + ft_strlen(s2);
+	tab = malloc(sizeof(char) * (size + 1));
+	if (!tab)
+		return (NULL);
+	while (s1[i])
+	{
+		tab[i] = s1[i];
+		i++;
+	}
+	ft_strcpy(&tab[i], s2);
+	return (tab);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   functions_utils2.c                                 :+:      :+:    :+:   */
+/*   functions_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 00:42:03 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/22 16:21:33 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/24 15:37:04 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,6 @@ char	*ft_get_path(char **s)
 		i++;
 	}
 	return (NULL);
-}
-
-char	*ft_join_free(char *s, const char *buf)
-{
-	char	*r;
-
-	r = ft_strjoin(s, buf);
-	free(s);
-	return (r);
 }
 
 char	*ft_pathname(char **paths, char **cmdargs)
