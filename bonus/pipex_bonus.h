@@ -6,7 +6,7 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 11:56:25 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/24 17:59:57 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/02/08 23:00:17 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <sys/wait.h>
+# include <sys/types.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 5
@@ -39,7 +40,8 @@ int		ft_strcmp(char *s1, char *s2);
 int		ft_check(char *s, char c);
 char	*ft_get_path(char **s);
 char	*ft_pathname(char **paths, char **cmdargs);
-void	ft_exceve(char *s, char **envp);
+void	check_execve_error(char *cmd, char **cmdargs, char *envp[]);
+void	ft_execve(char *s, char *envp[]);
 void	ft_read_input(char **av, int *fd);
 void	ft_read_pipe(int *fd);
 int		ft_open(char **av, int ac, int *outfile, int i);

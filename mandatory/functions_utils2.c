@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   functions_utils2_bonus.c                           :+:      :+:    :+:   */
+/*   functions_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 15:47:05 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/24 17:47:10 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/28 16:27:11 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "pipex.h"
 
 void	check_errors(int fd, char *s)
 {
-	if (!s)
-		return ;
 	if (fd == -1)
 	{
 		perror(s);
@@ -44,11 +42,11 @@ void	ft_pipe(int *fd)
 	check_errors(pipe(fd), "Error creating pipe");
 }
 
-void	ft_wait(void)
+void	ft_wait(int pid)
 {
 	pid_t	terminated_pid;
 
-	terminated_pid = wait(NULL);
+	terminated_pid = waitpid(pid, NULL, 0);
 	if (terminated_pid == -1)
 	{
 		perror("Error waiting");

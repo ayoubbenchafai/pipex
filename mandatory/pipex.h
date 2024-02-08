@@ -6,7 +6,7 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 11:56:25 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/24 17:29:09 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/02/08 22:44:52 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <sys/wait.h>
+# include <sys/types.h>
 
 char	*ft_join_free(char *s, const char *buf);
 size_t	ft_strlen(const char *s);
@@ -28,7 +29,8 @@ char	*ft_strjoin(char *s1, const char *s2);
 int		ft_check(char *s, char c);
 char	*ft_get_path(char **s);
 char	*ft_pathname(char **paths, char **cmdargs);
-void	ft_exceve(char *s, char **envp);
+void	check_execve_error(char *cmd, char **cmdargs, char *envp[]);
+void	ft_execve(char *s, char *envp[]);
 void	check_errors(int fd, char *s);
 void	ft_close(int fd);
 void	ft_dup2(int oldfd, int newfd);

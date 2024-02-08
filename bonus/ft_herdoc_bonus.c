@@ -6,7 +6,7 @@
 /*   By: aben-cha <aben-cha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 00:22:52 by aben-cha          #+#    #+#             */
-/*   Updated: 2024/01/24 17:55:34 by aben-cha         ###   ########.fr       */
+/*   Updated: 2024/01/29 13:34:48 by aben-cha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,16 @@ void	ft_read_input(char **av, int *fd)
 
 	p = ft_strjoin(av[2], "\n");
 	if (!p)
-		return ;
+		exit(1);
 	while (1)
 	{
 		s = get_next_line(0);
 		if (!s)
-			return ;
+			exit(1);
 		if (ft_strcmp(s, p) == 0)
 		{
 			free(s);
+			free(p);
 			exit(0);
 		}
 		len_s = ft_strlen(s);
@@ -108,7 +109,7 @@ void	ft_process(char *cmd, char **envp, bool c, int *outfile)
 			ft_dup2(fd[1], 1);
 			ft_close(fd[1]);
 		}
-		ft_exceve(cmd, envp);
+		ft_execve(cmd, envp);
 	}
 	else
 		ft_read_pipe(fd);
